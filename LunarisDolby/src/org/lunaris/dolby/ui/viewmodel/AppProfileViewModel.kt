@@ -54,7 +54,9 @@ class AppProfileViewModel(application: Application) : AndroidViewModel(applicati
             } catch (e: Exception) {
                 if (!isCleared) {
                     DolbyConstants.dlog(TAG, "Error loading apps: ${e.message}")
-                    _uiState.value = AppProfileUiState.Error(e.message ?: "Unknown error")
+                    _uiState.value = AppProfileUiState.Error(
+                        e.message ?: context.getString(R.string.dolby_error_unknown)
+                    )
                 }
             }
         }
@@ -65,11 +67,14 @@ class AppProfileViewModel(application: Application) : AndroidViewModel(applicati
             try {
                 if (profile == -1) {
                     appProfileManager.removeAppProfile(packageName)
-                    ToastHelper.showToast(context, "Profile reset to default")
+                    ToastHelper.showToast(context, context.getString(R.string.app_profile_reset_toast))
                 } else {
                     appProfileManager.setAppProfile(packageName, profile)
                     val profileName = getProfileName(profile)
-                    ToastHelper.showToast(context, "Profile set to: $profileName")
+                    ToastHelper.showToast(
+                        context,
+                        context.getString(R.string.app_profile_set_toast, profileName)
+                    )
                 }
                 loadApps()
             } catch (e: Exception) {
@@ -82,7 +87,7 @@ class AppProfileViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 appProfileManager.removeAppProfile(packageName)
-                ToastHelper.showToast(context, "Profile removed")
+                ToastHelper.showToast(context, context.getString(R.string.app_profile_removed_toast))
                 loadApps()
             } catch (e: Exception) {
                 DolbyConstants.dlog(TAG, "Error removing app profile: ${e.message}")
@@ -94,7 +99,7 @@ class AppProfileViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 appProfileManager.clearAllAppProfiles()
-                ToastHelper.showToast(context, "All app profiles cleared")
+                ToastHelper.showToast(context, context.getString(R.string.app_profiles_cleared_toast))
                 loadApps()
             } catch (e: Exception) {
                 DolbyConstants.dlog(TAG, "Error clearing app profiles: ${e.message}")
@@ -108,10 +113,10 @@ class AppProfileViewModel(application: Application) : AndroidViewModel(applicati
             val profileValues = context.resources.getStringArray(R.array.dolby_profile_values)
             
             val index = profileValues.indexOfFirst { it.toInt() == profile }
-            if (index >= 0) profiles[index] else "Unknown"
+            if (index >= 0) profiles[index] else context.getString(R.string.dolby_unknown)
         } catch (e: Exception) {
             DolbyConstants.dlog(TAG, "Error getting profile name: ${e.message}")
-            "Unknown"
+            context.getString(R.string.dolby_unknown)
         }
     }
     

@@ -124,7 +124,9 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
                     )
                 }
             } catch (e: Exception) {
-                if (!isCleared) _uiState.value = EqualizerUiState.Error(e.message ?: "Unknown error")
+                if (!isCleared) _uiState.value = EqualizerUiState.Error(
+                    e.message ?: context.getString(R.string.dolby_error_unknown)
+                )
             }
         }
     }
@@ -140,7 +142,7 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
                 _autoEqReady.value = true
             } catch (e: Exception) {
                 DolbyConstants.dlog(TAG, "Error initializing AutoEQ: ${e.message}")
-                ToastHelper.showToast(ctx, "Failed to load AutoEQ profiles")
+                ToastHelper.showToast(ctx, ctx.getString(R.string.dolby_autoeq_load_failed))
             } finally {
                 _isSearchLoading.value = false
             }
@@ -163,11 +165,17 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
 
                     applyAutoEqProfile(profile.name, profile.graphicEq)
                 } else {
-                    ToastHelper.showToast(ctx, "Failed to download profile for ${entry.name}")
+                    ToastHelper.showToast(
+                        ctx,
+                        ctx.getString(R.string.dolby_autoeq_download_failed, entry.name)
+                    )
                 }
             } catch (e: Exception) {
                 DolbyConstants.dlog(TAG, "Error downloading AutoEQ profile: ${e.message}")
-                ToastHelper.showToast(ctx, "Failed to download profile for ${entry.name}")
+                ToastHelper.showToast(
+                    ctx,
+                    ctx.getString(R.string.dolby_autoeq_download_failed, entry.name)
+                )
             } finally {
                 _isSearchLoading.value = false
             }
@@ -396,8 +404,11 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
                     if (!isFlatPreset && state.currentPreset.bandMode != currentBandMode) {
                         ToastHelper.showToast(
                             context,
-                            "Cannot edit ${state.currentPreset.bandMode.displayName} preset in ${currentBandMode.displayName} mode. " +
-                            "Switch to ${state.currentPreset.bandMode.displayName} or select a different preset."
+                            context.getString(
+                                R.string.dolby_preset_band_mode_mismatch_toast,
+                                state.currentPreset.bandMode.label(context),
+                                currentBandMode.label(context)
+                            )
                         )
                         return@launch
                     }
@@ -414,7 +425,7 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun savePreset(name: String): String? {
         val state = _uiState.value
-        if (state !is EqualizerUiState.Success) return "Invalid state"
+        if (state !is EqualizerUiState.Success) return context.getString(R.string.dolby_error_invalid_state)
         
         if (state.presets.any { it.name.equals(name.trim(), ignoreCase = true) }) {
             return context.getString(R.string.dolby_geq_preset_name_exists)
@@ -451,7 +462,7 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun saveImportedPreset(preset: EqualizerPreset): String? {
         val state = _uiState.value
-        if (state !is EqualizerUiState.Success) return "Invalid state"
+        if (state !is EqualizerUiState.Success) return context.getString(R.string.dolby_error_invalid_state)
         
         if (state.presets.any { it.name.equals(preset.name.trim(), ignoreCase = true) }) {
             return context.getString(R.string.dolby_geq_preset_name_exists)
@@ -502,3 +513,6 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
         private const val TAG = "EqualizerViewModel"
     }
 }
+
+private fun BandMode.label(context: Context): String =
+    context.resources.getQuantityString(R.plurals.dolby_band_count, bandCount, bandCount)

@@ -117,6 +117,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
@@ -384,7 +385,7 @@ private fun ModernEqualizerContent(
         DolbyPageHeading(
             title = stringResource(R.string.dolby_preset),
             subtitle = stringResource(R.string.dolby_equalizer_summary),
-            badgeText = "${state.currentPreset.name} · ${state.bandMode.displayName}",
+            badgeText = "${state.currentPreset.name} · ${pluralStringResource(R.plurals.dolby_band_count, state.bandMode.bandCount, state.bandMode.bandCount)}",
             badgeIcon = Icons.Rounded.GraphicEq,
         )
 
@@ -445,7 +446,19 @@ private fun ModernEqualizerContent(
                             )
                             Spacer(modifier = Modifier.height(2.dp))
                             Text(
-                                text = "This ${state.currentPreset.bandMode.displayName} preset cannot be edited in ${state.bandMode.displayName} mode.",
+                                text = stringResource(
+                                    R.string.dolby_preset_band_mode_mismatch_message,
+                                    pluralStringResource(
+                                        R.plurals.dolby_band_count,
+                                        state.currentPreset.bandMode.bandCount,
+                                        state.currentPreset.bandMode.bandCount
+                                    ),
+                                    pluralStringResource(
+                                        R.plurals.dolby_band_count,
+                                        state.bandMode.bandCount,
+                                        state.bandMode.bandCount
+                                    )
+                                ),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.9f)
                             )
@@ -469,7 +482,11 @@ private fun ModernEqualizerContent(
                         Text(
                             text = stringResource(
                                 R.string.dolby_eq_switch_to_mode,
-                                state.currentPreset.bandMode.displayName
+                                pluralStringResource(
+                                    R.plurals.dolby_band_count,
+                                    state.currentPreset.bandMode.bandCount,
+                                    state.currentPreset.bandMode.bandCount
+                                )
                             ),
                             style = MaterialTheme.typography.labelLargeEmphasized
                         )
@@ -1300,7 +1317,11 @@ private fun BandModeTile(
             }
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = mode.displayName,
+                text = pluralStringResource(
+                    R.plurals.dolby_band_count,
+                    mode.bandCount,
+                    mode.bandCount
+                ),
                 style = if (isSelected) {
                     MaterialTheme.typography.labelSmallEmphasized
                 } else {

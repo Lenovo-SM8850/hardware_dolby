@@ -191,7 +191,7 @@ class AppProfileMonitorService : Service() {
                                     val appName = getAppName(packageName)
                                     ToastHelper.showToast(
                                         this@AppProfileMonitorService,
-                                        "Dolby: $profileName ($appName)"
+                                        getString(R.string.app_profile_switch_toast, profileName, appName)
                                     )
                                 }
                             } else {
@@ -250,9 +250,9 @@ class AppProfileMonitorService : Service() {
         
         return try {
             val index = profileValues.indexOfFirst { it.toInt() == profile }
-            if (index >= 0) profiles[index] else "Unknown"
+            if (index >= 0) profiles[index] else getString(R.string.dolby_unknown)
         } catch (e: Exception) {
-            "Unknown"
+            getString(R.string.dolby_unknown)
         }
     }
     
