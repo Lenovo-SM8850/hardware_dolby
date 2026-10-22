@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -61,10 +62,13 @@ fun PresetImportExportScreen(
                     isLoading = true
                     exportManager.exportPresetToFile(preset, uri).fold(
                         onSuccess = {
-                            ToastHelper.showToast(context, "Preset exported successfully!")
+                            ToastHelper.showToast(context, context.getString(R.string.preset_export_success))
                         },
                         onFailure = { e ->
-                            ToastHelper.showToast(context, "Export failed: ${e.message}")
+                            ToastHelper.showToast(
+                                context,
+                                context.getString(R.string.preset_export_failed_reason, e.message.orEmpty())
+                            )
                         }
                     )
                     isLoading = false
@@ -88,13 +92,24 @@ fun PresetImportExportScreen(
                         } else {
                             ToastHelper.showToast(
                                 context, 
-                                "Preset '${preset.name}' imported! (${preset.bandMode.displayName})"
+                                context.getString(
+                                    R.string.preset_import_success_named,
+                                    preset.name,
+                                    context.resources.getQuantityString(
+                                        R.plurals.dolby_band_count,
+                                        preset.bandMode.bandCount,
+                                        preset.bandMode.bandCount
+                                    )
+                                )
                             )
                             viewModel.loadEqualizer()
                         }
                     },
                     onFailure = { e ->
-                        ToastHelper.showToast(context, "Import failed: ${e.message}")
+                        ToastHelper.showToast(
+                            context,
+                            context.getString(R.string.preset_import_failed_reason, e.message.orEmpty())
+                        )
                     }
                 )
                 isLoading = false
@@ -113,10 +128,20 @@ fun PresetImportExportScreen(
                 
                 exportManager.exportMultiplePresets(presets, uri).fold(
                     onSuccess = {
-                        ToastHelper.showToast(context, "${presets.size} presets exported!")
+                        ToastHelper.showToast(
+                            context,
+                            context.resources.getQuantityString(
+                                R.plurals.preset_batch_exported_count,
+                                presets.size,
+                                presets.size
+                            )
+                        )
                     },
                     onFailure = { e ->
-                        ToastHelper.showToast(context, "Batch export failed: ${e.message}")
+                        ToastHelper.showToast(
+                            context,
+                            context.getString(R.string.preset_batch_export_failed_reason, e.message.orEmpty())
+                        )
                     }
                 )
                 isLoading = false
@@ -141,12 +166,19 @@ fun PresetImportExportScreen(
                         }
                         ToastHelper.showToast(
                             context, 
-                            "Imported $successCount of ${presets.size} presets"
+                            context.getString(
+                                R.string.preset_batch_imported_count,
+                                successCount,
+                                presets.size
+                            )
                         )
                         viewModel.loadEqualizer()
                     },
                     onFailure = { e ->
-                        ToastHelper.showToast(context, "Batch import failed: ${e.message}")
+                        ToastHelper.showToast(
+                            context,
+                            context.getString(R.string.preset_batch_import_failed_reason, e.message.orEmpty())
+                        )
                     }
                 )
                 isLoading = false
@@ -168,7 +200,7 @@ fun PresetImportExportScreen(
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack, 
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.back),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -177,7 +209,7 @@ fun PresetImportExportScreen(
                     IconButton(onClick = { showBatchExport = true }) {
                         Icon(
                             Icons.Default.FileDownload, 
-                            contentDescription = "Batch export",
+                            contentDescription = stringResource(R.string.batch_export),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -280,7 +312,14 @@ fun PresetImportExportScreen(
                                                         } else {
                                                             ToastHelper.showToast(
                                                                 context, 
-                                                                "Preset imported from clipboard! (${preset.bandMode.displayName})"
+                                                                context.getString(
+                                                                    R.string.preset_clipboard_import_success,
+                                                                    context.resources.getQuantityString(
+                                                                        R.plurals.dolby_band_count,
+                                                                        preset.bandMode.bandCount,
+                                                                        preset.bandMode.bandCount
+                                                                    )
+                                                                )
                                                             )
                                                             viewModel.loadEqualizer()
                                                         }
@@ -288,7 +327,10 @@ fun PresetImportExportScreen(
                                                     onFailure = { e ->
                                                         ToastHelper.showToast(
                                                             context, 
-                                                            "Clipboard import failed: ${e.message}"
+                                                            context.getString(
+                                                                R.string.preset_clipboard_import_failed_reason,
+                                                                e.message.orEmpty()
+                                                            )
                                                         )
                                                     }
                                                 )
@@ -334,13 +376,13 @@ fun PresetImportExportScreen(
                                             onSuccess = {
                                                 ToastHelper.showToast(
                                                     context, 
-                                                    "Preset copied to clipboard!"
+                                                    context.getString(R.string.preset_copied_clipboard)
                                                 )
                                             },
                                             onFailure = { e ->
                                                 ToastHelper.showToast(
                                                     context, 
-                                                    "Copy failed: ${e.message}"
+                                                    context.getString(R.string.preset_copy_failed_reason, e.message.orEmpty())
                                                 )
                                             }
                                         )
@@ -357,7 +399,7 @@ fun PresetImportExportScreen(
                                             onFailure = { e ->
                                                 ToastHelper.showToast(
                                                     context, 
-                                                    "Share failed: ${e.message}"
+                                                    context.getString(R.string.preset_share_failed_reason, e.message.orEmpty())
                                                 )
                                             }
                                         )
@@ -482,13 +524,16 @@ fun PresetImportExportScreen(
     
     if (showDeleteDialog && presetToDelete != null) {
         ModernConfirmDialog(
-            title = "Delete Preset",
-            message = "Are you sure you want to delete '${presetToDelete!!.name}'? This will remove it from your preset list and cannot be undone.",
+            title = stringResource(R.string.dolby_geq_delete_preset),
+            message = stringResource(R.string.preset_delete_message, presetToDelete!!.name),
             icon = Icons.Default.Delete,
             onConfirm = {
                 scope.launch {
                     viewModel.deletePreset(presetToDelete!!)
-                    ToastHelper.showToast(context, "Preset '${presetToDelete!!.name}' deleted")
+                    ToastHelper.showToast(
+                        context,
+                        context.getString(R.string.preset_deleted, presetToDelete!!.name)
+                    )
                     viewModel.loadEqualizer()
                     showDeleteDialog = false
                     presetToDelete = null
@@ -510,6 +555,12 @@ private fun PresetExportCard(
     onShare: () -> Unit,
     onDelete: () -> Unit
 ) {
+    val bandModeName = pluralStringResource(
+        R.plurals.dolby_band_count,
+        preset.bandMode.bandCount,
+        preset.bandMode.bandCount
+    )
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
@@ -530,7 +581,12 @@ private fun PresetExportCard(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        "${preset.bandMode.displayName} • ${preset.bandGains.size} bands",
+                        pluralStringResource(
+                            R.plurals.preset_band_summary,
+                            preset.bandGains.size,
+                            bandModeName,
+                            preset.bandGains.size
+                        ),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -539,28 +595,28 @@ private fun PresetExportCard(
                     IconButton(onClick = onExportFile) {
                         Icon(
                             Icons.Default.FileDownload, 
-                            contentDescription = "Export to file",
+                            contentDescription = stringResource(R.string.preset_export_to_file),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     IconButton(onClick = onCopyClipboard) {
                         Icon(
                             Icons.Default.ContentCopy, 
-                            contentDescription = "Copy to clipboard",
+                            contentDescription = stringResource(R.string.preset_copy_clipboard),
                             tint = MaterialTheme.colorScheme.secondary
                         )
                     }
                     IconButton(onClick = onShare) {
                         Icon(
                             Icons.Default.Share, 
-                            contentDescription = "Share",
+                            contentDescription = stringResource(R.string.share),
                             tint = MaterialTheme.colorScheme.tertiary
                         )
                     }
                     IconButton(onClick = onDelete) {
                         Icon(
                             Icons.Default.Delete, 
-                            contentDescription = "Delete",
+                            contentDescription = stringResource(R.string.delete),
                             tint = MaterialTheme.colorScheme.error
                         )
                     }

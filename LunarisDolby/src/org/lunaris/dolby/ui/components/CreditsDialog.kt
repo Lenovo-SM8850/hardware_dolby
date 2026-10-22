@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -48,6 +49,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
+import org.lunaris.dolby.R
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -86,45 +88,45 @@ fun CreditsDialog(
         Contributor(
             name = "Ghost",
             githubUsername = "Ghosuto",
-            contribution = "Rewrite Dolby in Compose (Lunaris Dolby)",
+            contribution = stringResource(R.string.dolby_credits_contribution_ghost),
             isHighlighted = true
         ),
         Contributor(
             name = "Adithya R",
             githubUsername = "adithya2306",
-            contribution = "AOSPA Dolby Manager (Initial Code)",
+            contribution = stringResource(R.string.dolby_credits_contribution_adithya),
             isHighlighted = true
         ),
         Contributor(
             name = "Kenway",
             githubUsername = "kenway214",
-            contribution = "Base & Treble Changes, EQ Tuning",
+            contribution = stringResource(R.string.dolby_credits_contribution_kenway),
             isHighlighted = true
         ),
         Contributor(
             name = "tranQuila",
             githubUsername = "MrTopia",
-            contribution = "Adding per-device dolby state memory",
+            contribution = stringResource(R.string.dolby_credits_contribution_tranquila),
             isHighlighted = true
         ),
         Contributor(
             name = "Pablo Escobar",
             githubUsername = "pabloescobar-reborn",
-            contribution = "AutoEQ headphone correction profiles",
+            contribution = stringResource(R.string.dolby_credits_contribution_pablo),
             isHighlighted = true
         )
     )
     
     val translationEntries = listOf(
-        translation("Spanish (Spain)", t("sm6150-dreams")),
-        translation("Portuguese (Brazil)", t("SMarcosS", "S-Marcos-S")),
-        translation("Indonesian", t("Alhaidar Latif", "zylhdrXP")),
-        translation("Polish", t("Kacper", "ziomek3120"), t("rehork")),
-        translation("Traditional Chinese", t("DenlNister", "nnn950711")),
-        translation("Turkish", t("Ümit Taylan", "jinetty")),
-        translation("Russian", t("Dmitry", "dkpost3")),
-        translation("Persian", t("Arman Altafi", "Arman-ATI")),
-        translation("Vietnamese", t("ZetyaWyn"))
+        translation(stringResource(R.string.language_spanish_spain), t("sm6150-dreams")),
+        translation(stringResource(R.string.language_portuguese_brazil), t("SMarcosS", "S-Marcos-S")),
+        translation(stringResource(R.string.language_indonesian), t("Alhaidar Latif", "zylhdrXP")),
+        translation(stringResource(R.string.language_polish), t("Kacper", "ziomek3120"), t("rehork")),
+        translation(stringResource(R.string.language_traditional_chinese), t("DenlNister", "nnn950711")),
+        translation(stringResource(R.string.language_turkish), t("Ümit Taylan", "jinetty")),
+        translation(stringResource(R.string.language_russian), t("Dmitry", "dkpost3")),
+        translation(stringResource(R.string.language_persian), t("Arman Altafi", "Arman-ATI")),
+        translation(stringResource(R.string.language_vietnamese), t("ZetyaWyn"))
     )
     
     Dialog(
@@ -169,7 +171,7 @@ fun CreditsDialog(
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = "Credits & Contributors",
+                            text = stringResource(R.string.dolby_credits_title),
                             style = MaterialTheme.typography.headlineMediumEmphasized,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -204,7 +206,7 @@ fun CreditsDialog(
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
-                                    text = "Thank you to all contributors who made this project possible!",
+                                    text = stringResource(R.string.dolby_credits_thanks),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
@@ -250,7 +252,7 @@ fun CreditsDialog(
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
-                                        text = "View on GitHub",
+                                        text = stringResource(R.string.dolby_credits_view_github),
                                         style = MaterialTheme.typography.titleMediumEmphasized,
                                         color = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
@@ -271,7 +273,7 @@ fun CreditsDialog(
                     }
                     item {
                         Text(
-                            text = "Main Contributors",
+                            text = stringResource(R.string.dolby_credits_main_contributors),
                             style = MaterialTheme.typography.titleMediumEmphasized,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
@@ -282,7 +284,7 @@ fun CreditsDialog(
                     }
                     item {
                         Text(
-                            text = "Translation Contributors",
+                            text = stringResource(R.string.dolby_credits_translation_contributors),
                             style = MaterialTheme.typography.titleMediumEmphasized,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
@@ -338,13 +340,13 @@ fun CreditsDialog(
                                     Spacer(modifier = Modifier.width(12.dp))
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(
-                                            text = "Missing your language?",
+                                            text = stringResource(R.string.dolby_credits_missing_language),
                                             style = MaterialTheme.typography.titleMediumEmphasized,
                                             color = MaterialTheme.colorScheme.onPrimaryContainer
                                         )
                                         Spacer(modifier = Modifier.height(2.dp))
                                         Text(
-                                            text = "Help us make Lunaris Dolby better in your language! Submit or update translations on GitHub.",
+                                            text = stringResource(R.string.dolby_credits_missing_language_desc),
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onPrimaryContainer
                                         )
@@ -369,7 +371,7 @@ fun CreditsDialog(
                                         modifier = Modifier.size(18.dp)
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text("Submit a Pull Request")
+                                    Text(stringResource(R.string.dolby_credits_submit_pr))
                                 }
                             }
                         }
@@ -398,7 +400,7 @@ fun CreditsDialog(
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
-                                    text = "And all other contributors",
+                                    text = stringResource(R.string.dolby_credits_other_contributors),
                                     style = MaterialTheme.typography.bodyMedium,
                                     fontWeight = FontWeight.Medium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -406,7 +408,7 @@ fun CreditsDialog(
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
-                                    text = "Check the GitHub repository for the complete list",
+                                    text = stringResource(R.string.dolby_credits_other_contributors_desc),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     textAlign = TextAlign.Center
@@ -439,7 +441,7 @@ fun CreditsDialog(
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Close")
+                        Text(stringResource(R.string.close))
                     }
                 }
             }

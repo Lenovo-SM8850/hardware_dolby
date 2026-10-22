@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -272,6 +273,16 @@ private fun ModernEqualizerContent(
         )
         
         if (!isBandModeCompatible && !isFlatPreset) {
+            val presetBandModeName = pluralStringResource(
+                R.plurals.dolby_band_count,
+                state.currentPreset.bandMode.bandCount,
+                state.currentPreset.bandMode.bandCount
+            )
+            val bandModeName = pluralStringResource(
+                R.plurals.dolby_band_count,
+                state.bandMode.bandCount,
+                state.bandMode.bandCount
+            )
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.large,
@@ -300,8 +311,11 @@ private fun ModernEqualizerContent(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "This ${state.currentPreset.bandMode.displayName} preset cannot be edited in ${state.bandMode.displayName} mode. " +
-                                  "Switch to ${state.currentPreset.bandMode.displayName} or select a compatible preset.",
+                            text = stringResource(
+                                R.string.dolby_preset_band_mode_mismatch_message,
+                                presetBandModeName,
+                                bandModeName
+                            ),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onErrorContainer
                         )
@@ -320,7 +334,7 @@ private fun ModernEqualizerContent(
             Column(modifier = Modifier.padding(20.dp)) {
                 EqualizerSectionHeader(
                     icon = Icons.Default.Visibility,
-                    title = "Equalizer View",
+                    title = stringResource(R.string.dolby_equalizer_view),
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
                 
@@ -329,7 +343,7 @@ private fun ModernEqualizerContent(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     ViewModeTile(
-                        title = "Curve",
+                        title = stringResource(R.string.dolby_equalizer_view_curve),
                         icon = Icons.Default.ShowChart,
                         isSelected = viewMode == EqualizerViewMode.CURVE,
                         onClick = { onViewModeChange(EqualizerViewMode.CURVE) },
@@ -337,7 +351,7 @@ private fun ModernEqualizerContent(
                     )
                     
                     ViewModeTile(
-                        title = "Sliders",
+                        title = stringResource(R.string.dolby_equalizer_view_sliders),
                         icon = Icons.Default.Tune,
                         isSelected = viewMode == EqualizerViewMode.SLIDERS,
                         onClick = { onViewModeChange(EqualizerViewMode.SLIDERS) },
@@ -416,8 +430,8 @@ private fun CurveViewContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = if (canEdit) "Interactive Frequency Response" 
-                          else "Frequency Response (Read-only)",
+                    text = if (canEdit) stringResource(R.string.dolby_frequency_response_interactive)
+                          else stringResource(R.string.dolby_frequency_response_read_only),
                     style = MaterialTheme.typography.titleMediumEmphasized,
                     color = if (canEdit) MaterialTheme.colorScheme.onSurface
                           else MaterialTheme.colorScheme.onSurfaceVariant
@@ -428,7 +442,11 @@ private fun CurveViewContent(
                           else MaterialTheme.colorScheme.errorContainer
                 ) {
                     Text(
-                        text = "${state.bandMode.bandCount} bands",
+                        text = pluralStringResource(
+                            R.plurals.dolby_band_count,
+                            state.bandMode.bandCount,
+                            state.bandMode.bandCount
+                        ),
                         style = MaterialTheme.typography.labelMediumEmphasized,
                         color = if (canEdit) MaterialTheme.colorScheme.onSecondaryContainer
                               else MaterialTheme.colorScheme.onErrorContainer,
@@ -438,9 +456,12 @@ private fun CurveViewContent(
             }
             Text(
                 text = if (canEdit) 
-                    "Drag the control points to adjust gain (±15 dB) • ${getFrequencyRange(state.bandGains)}"
+                    stringResource(
+                        R.string.dolby_frequency_response_drag_hint,
+                        getFrequencyRange(state.bandGains)
+                    )
                 else
-                    "Read-only view • Band mode mismatch",
+                    stringResource(R.string.dolby_frequency_response_read_only_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = if (canEdit) MaterialTheme.colorScheme.onSurfaceVariant
                       else MaterialTheme.colorScheme.error,
@@ -534,7 +555,10 @@ private fun SlidersViewContent(
                 ) {
                     Text(
                         text = if (canEdit) stringResource(R.string.dolby_geq_slider_label_gain)
-                              else "${stringResource(R.string.dolby_geq_slider_label_gain)} (Read-only)",
+                              else stringResource(
+                                  R.string.dolby_geq_slider_label_gain_read_only,
+                                  stringResource(R.string.dolby_geq_slider_label_gain)
+                              ),
                         style = MaterialTheme.typography.titleMediumEmphasized,
                         color = if (canEdit) MaterialTheme.colorScheme.onSurface
                               else MaterialTheme.colorScheme.onSurfaceVariant
@@ -1086,7 +1110,11 @@ private fun BandModeTile(
             Spacer(modifier = Modifier.height(6.dp))
             
             Text(
-                text = mode.displayName,
+                text = pluralStringResource(
+                    R.plurals.dolby_band_count,
+                    mode.bandCount,
+                    mode.bandCount
+                ),
                 style = if (isSelected) MaterialTheme.typography.labelSmallEmphasized
                     else MaterialTheme.typography.labelSmall,
                 color = if (isSelected)

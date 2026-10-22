@@ -9,6 +9,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import org.lunaris.dolby.DolbyConstants
+import org.lunaris.dolby.R
 import org.lunaris.dolby.data.DolbyRepository
 import org.lunaris.dolby.domain.models.*
 import org.lunaris.dolby.service.DolbyEffectService
@@ -106,7 +107,7 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
             } catch (e: Exception) {
                 if (!isCleared) {
                     DolbyConstants.dlog(TAG, "Error loading settings: ${e.message}")
-                    _uiState.value = DolbyUiState.Error(e.message ?: "Unknown error")
+                    _uiState.value = DolbyUiState.Error(e.message ?: getApplication<Application>().getString(R.string.dolby_error_unknown))
                 }
             }
         }
@@ -158,10 +159,17 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
                 loadSettings()
             } catch (e: IllegalArgumentException) {
                 DolbyConstants.dlog(TAG, "Invalid bass level: ${e.message}")
-                _uiState.value = DolbyUiState.Error("Invalid bass level: ${e.message}")
+                _uiState.value = DolbyUiState.Error(
+                    getApplication<Application>().getString(
+                        R.string.dolby_error_invalid_bass_level,
+                        e.message.orEmpty()
+                    )
+                )
             } catch (e: Exception) {
                 DolbyConstants.dlog(TAG, "Error setting bass level: ${e.message}")
-                _uiState.value = DolbyUiState.Error("Failed to set bass level")
+                _uiState.value = DolbyUiState.Error(
+                    getApplication<Application>().getString(R.string.dolby_error_set_bass_level)
+                )
             }
         }
     }
@@ -186,10 +194,17 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
                 loadSettings()
             } catch (e: IllegalArgumentException) {
                 DolbyConstants.dlog(TAG, "Invalid mid level: ${e.message}")
-                _uiState.value = DolbyUiState.Error("Invalid mid level: ${e.message}")
+                _uiState.value = DolbyUiState.Error(
+                    getApplication<Application>().getString(
+                        R.string.dolby_error_invalid_mid_level,
+                        e.message.orEmpty()
+                    )
+                )
             } catch (e: Exception) {
                 DolbyConstants.dlog(TAG, "Error setting mid level: ${e.message}")
-                _uiState.value = DolbyUiState.Error("Failed to set mid level")
+                _uiState.value = DolbyUiState.Error(
+                    getApplication<Application>().getString(R.string.dolby_error_set_mid_level)
+                )
             }
         }
     }
@@ -202,10 +217,17 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
                 loadSettings()
             } catch (e: IllegalArgumentException) {
                 DolbyConstants.dlog(TAG, "Invalid treble level: ${e.message}")
-                _uiState.value = DolbyUiState.Error("Invalid treble level: ${e.message}")
+                _uiState.value = DolbyUiState.Error(
+                    getApplication<Application>().getString(
+                        R.string.dolby_error_invalid_treble_level,
+                        e.message.orEmpty()
+                    )
+                )
             } catch (e: Exception) {
                 DolbyConstants.dlog(TAG, "Error setting treble level: ${e.message}")
-                _uiState.value = DolbyUiState.Error("Failed to set treble level")
+                _uiState.value = DolbyUiState.Error(
+                    getApplication<Application>().getString(R.string.dolby_error_set_treble_level)
+                )
             }
         }
     }

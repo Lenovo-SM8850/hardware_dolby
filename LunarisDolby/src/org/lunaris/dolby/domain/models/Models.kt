@@ -5,10 +5,10 @@
 
 package org.lunaris.dolby.domain.models
 
-enum class BandMode(val value: String, val displayName: String, val bandCount: Int) {
-    TEN_BAND("10", "10 Bands", 10),
-    FIFTEEN_BAND("15", "15 Bands", 15),
-    TWENTY_BAND("20", "20 Bands", 20);
+enum class BandMode(val value: String, val bandCount: Int) {
+    TEN_BAND("10", 10),
+    FIFTEEN_BAND("15", 15),
+    TWENTY_BAND("20", 20);
     
     companion object {
         fun fromValue(value: String): BandMode {

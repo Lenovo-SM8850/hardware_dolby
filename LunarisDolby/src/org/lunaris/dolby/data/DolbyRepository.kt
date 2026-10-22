@@ -348,7 +348,7 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
 
         if (level !in 0..100) {
             DolbyConstants.dlog(TAG, "setBassLevel: invalid level $level")
-            throw IllegalArgumentException("Bass level must be between 0 and 100")
+            throw IllegalArgumentException(context.getString(R.string.dolby_error_bass_level_range))
         }
         
         try {
@@ -409,7 +409,7 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
 
         if (level !in 0..100) {
             DolbyConstants.dlog(TAG, "setTrebleLevel: invalid level $level")
-            throw IllegalArgumentException("Treble level must be between 0 and 100")
+            throw IllegalArgumentException(context.getString(R.string.dolby_error_treble_level_range))
         }
 
         try {
@@ -880,7 +880,7 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
 
         if (level !in 0..100) {
             DolbyConstants.dlog(TAG, "setMidLevel: invalid level $level")
-            throw IllegalArgumentException("Mid level must be between 0 and 100")
+            throw IllegalArgumentException(context.getString(R.string.dolby_error_mid_level_range))
         }
 
         try {

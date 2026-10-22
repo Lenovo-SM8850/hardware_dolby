@@ -12,6 +12,42 @@
     <string name="dolby_equalizer_summary">Shape your sound, frequency by frequency</string>
     <string name="dolby_advanced_summary">Fine-tune the details of your listening experience</string>
 
+    <!-- Common -->
+    <string name="back">Back</string>
+    <string name="clear_all">Clear All</string>
+    <string name="close">Close</string>
+    <string name="delete">Delete</string>
+    <string name="refresh">Refresh</string>
+    <string name="share">Share</string>
+    <string name="dolby_error_unknown">Unknown error</string>
+    <string name="dolby_error_invalid_state">Invalid state</string>
+
+    <!-- Credits -->
+    <string name="dolby_credits_title">Credits &amp; Contributors</string>
+    <string name="dolby_credits_thanks">Thank you to all contributors who made this project possible!</string>
+    <string name="dolby_credits_view_github">View on GitHub</string>
+    <string name="dolby_credits_main_contributors">Main Contributors</string>
+    <string name="dolby_credits_translation_contributors">Translation Contributors</string>
+    <string name="dolby_credits_missing_language">Missing your language?</string>
+    <string name="dolby_credits_missing_language_desc">Help us make Lunaris Dolby better in your language! Submit or update translations on GitHub.</string>
+    <string name="dolby_credits_submit_pr">Submit a Pull Request</string>
+    <string name="dolby_credits_other_contributors">And all other contributors</string>
+    <string name="dolby_credits_other_contributors_desc">Check the GitHub repository for the complete list</string>
+    <string name="dolby_credits_contribution_ghost">Rewrite Dolby in Compose (Lunaris Dolby)</string>
+    <string name="dolby_credits_contribution_adithya">AOSPA Dolby Manager (Initial Code)</string>
+    <string name="dolby_credits_contribution_kenway">Base &amp; Treble Changes, EQ Tuning</string>
+    <string name="dolby_credits_contribution_tranquila">Adding per-device dolby state memory</string>
+    <string name="dolby_credits_contribution_pablo">AutoEQ headphone correction profiles</string>
+    <string name="language_spanish_spain">Spanish (Spain)</string>
+    <string name="language_portuguese_brazil">Portuguese (Brazil)</string>
+    <string name="language_indonesian">Indonesian</string>
+    <string name="language_polish">Polish</string>
+    <string name="language_traditional_chinese">Traditional Chinese</string>
+    <string name="language_turkish">Turkish</string>
+    <string name="language_russian">Russian</string>
+    <string name="language_persian">Persian</string>
+    <string name="language_vietnamese">Vietnamese</string>
+
     <!-- Dolby Atmos -->
     <string name="dolby_title">Dolby Atmos</string>
     <string name="dolby_summary">Experience immersive audio</string>
@@ -123,6 +159,21 @@
     <string name="band_tuner_reset">0 dB</string>
     <string name="band_tuner_increment">+0.1 dB</string>
 
+    <plurals name="dolby_band_count">
+        <item quantity="one">%1$d Band</item>
+        <item quantity="other">%1$d Bands</item>
+    </plurals>
+    <string name="dolby_preset_band_mode_mismatch_message">This %1$s preset cannot be edited in %2$s mode. Switch to %1$s or select a compatible preset.</string>
+    <string name="dolby_preset_band_mode_mismatch_toast">Cannot edit %1$s preset in %2$s mode. Switch to %1$s or select a different preset.</string>
+    <string name="dolby_equalizer_view">Equalizer View</string>
+    <string name="dolby_equalizer_view_curve">Curve</string>
+    <string name="dolby_equalizer_view_sliders">Sliders</string>
+    <string name="dolby_frequency_response_interactive">Interactive Frequency Response</string>
+    <string name="dolby_frequency_response_read_only">Frequency Response (Read-only)</string>
+    <string name="dolby_frequency_response_drag_hint">Drag the control points to adjust gain (±15 dB) • %1$s</string>
+    <string name="dolby_frequency_response_read_only_hint">Read-only view • Band mode mismatch</string>
+    <string name="dolby_geq_slider_label_gain_read_only">%1$s (Read-only)</string>
+
     <!-- Dolby intelligent EQ -->
     <string name="dolby_ieq">Intelligent equalizer</string>
     <string name="dolby_balanced">Balanced</string>
@@ -155,6 +206,11 @@
     <string name="app_profiles_change">Change</string>
     <string name="app_profiles_auto_switch">Auto-switch profiles</string>
     <string name="app_profiles_show_toasts">Show toasts</string>
+    <string name="app_profile_reset_toast">Profile reset to default</string>
+    <string name="app_profile_set_toast">Profile set to: %1$s</string>
+    <string name="app_profile_removed_toast">Profile removed</string>
+    <string name="app_profiles_cleared_toast">All app profiles cleared</string>
+    <string name="app_profile_switch_toast">Dolby: %1$s (%2$s)</string>
 
     <!-- Preset Import/Export -->
     <string name="preset_import_export">Import/Export Presets</string>
@@ -169,6 +225,34 @@
     <string name="preset_import_success">Preset imported successfully</string>
     <string name="preset_export_failed">Export failed</string>
     <string name="preset_import_failed">Import failed</string>
+    <string name="preset_export_to_file">Export to file</string>
+    <string name="preset_delete_message">Are you sure you want to delete \'%1$s\'? This will remove it from your preset list and cannot be undone.</string>
+    <string name="preset_export_failed_reason">Export failed: %1$s</string>
+    <string name="preset_import_failed_reason">Import failed: %1$s</string>
+    <string name="preset_import_success_named">Preset \'%1$s\' imported! (%2$s)</string>
+    <string name="preset_clipboard_import_success">Preset imported from clipboard! (%1$s)</string>
+    <string name="preset_clipboard_import_failed_reason">Clipboard import failed: %1$s</string>
+    <string name="preset_copy_failed_reason">Copy failed: %1$s</string>
+    <string name="preset_share_failed_reason">Share failed: %1$s</string>
+    <string name="preset_batch_export_failed_reason">Batch export failed: %1$s</string>
+    <string name="preset_batch_import_failed_reason">Batch import failed: %1$s</string>
+    <string name="preset_batch_imported_count">Imported %1$d of %2$d presets</string>
+    <string name="preset_copied_clipboard">Preset copied to clipboard!</string>
+    <string name="preset_deleted">Preset \'%1$s\' deleted</string>
+    <string name="preset_share_subject">Dolby Preset: %1$s (%2$s)</string>
+    <string name="preset_share_text">Check out this custom Dolby %1$s audio preset!</string>
+    <plurals name="preset_batch_exported_count">
+        <item quantity="one">%1$d preset exported!</item>
+        <item quantity="other">%1$d presets exported!</item>
+    </plurals>
+    <plurals name="preset_band_summary">
+        <item quantity="one">%1$s • %2$d band</item>
+        <item quantity="other">%1$s • %2$d bands</item>
+    </plurals>
+    <string name="preset_error_unsupported_version">Preset version not supported</string>
+    <string name="preset_error_band_count_mismatch">Band count mismatch: expected %1$d, got %2$d</string>
+    <string name="preset_error_open_file">Cannot open file</string>
+    <string name="preset_error_clipboard_empty">No data in clipboard</string>
 
     <!-- Notification Access -->
     <string name="notification_access_required">Notification Access Required</string>
@@ -216,4 +300,17 @@
     <string name="dolby_autoeq_search">Search</string>
     <string name="dolby_autoeq_active">Active profile</string>
     <string name="dolby_autoeq_selected">Selected profile</string>
+    <string name="dolby_autoeq_load_failed">Failed to load AutoEQ profiles</string>
+    <string name="dolby_autoeq_download_failed">Failed to download profile for %1$s</string>
+
+    <!-- Dolby level errors -->
+    <string name="dolby_error_invalid_bass_level">Invalid bass level: %1$s</string>
+    <string name="dolby_error_set_bass_level">Failed to set bass level</string>
+    <string name="dolby_error_invalid_mid_level">Invalid mid level: %1$s</string>
+    <string name="dolby_error_set_mid_level">Failed to set mid level</string>
+    <string name="dolby_error_invalid_treble_level">Invalid treble level: %1$s</string>
+    <string name="dolby_error_set_treble_level">Failed to set treble level</string>
+    <string name="dolby_error_bass_level_range">Bass level must be between 0 and 100</string>
+    <string name="dolby_error_mid_level_range">Mid level must be between 0 and 100</string>
+    <string name="dolby_error_treble_level_range">Treble level must be between 0 and 100</string>
 </resources>
