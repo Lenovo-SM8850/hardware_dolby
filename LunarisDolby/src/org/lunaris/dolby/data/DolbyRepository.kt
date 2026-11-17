@@ -982,20 +982,19 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
             .setUsage(AudioAttributes.USAGE_MEDIA)
             .build()
 
-        val BAND_FREQUENCIES_10 = listOf(32, 64, 125, 250, 500, 1000, 2250, 5000, 10000, 19688)
-        
-        val BAND_FREQUENCIES_15 = listOf(
-            32, 47, 94, 141, 234, 469, 844, 1313, 2250, 3750, 5813, 9000, 11250, 13875, 19688
-        )
-        
+        // Center frequencies in Hz of the effect's 20 graphic equalizer bands.
         val BAND_FREQUENCIES_20 = listOf(
-            32, 47, 141, 234, 328, 469, 656, 844, 1031, 1313,
-            1688, 2250, 3000, 3750, 4688, 5813, 7125, 9000, 11250, 19688
+            47, 141, 234, 328, 469, 656, 844, 1031, 1313, 1688,
+            2250, 3000, 3750, 4688, 5813, 7125, 9000, 11250, 13875, 19688
         )
         
         private val TEN_BAND_INDICES = listOf(0, 2, 4, 6, 8, 10, 12, 14, 16, 18)
         
         private val FIFTEEN_BAND_INDICES = listOf(0, 1, 2, 3, 4, 5, 6, 8, 11, 12, 14, 15, 17, 18, 19)
+
+        val BAND_FREQUENCIES_10 = TEN_BAND_INDICES.map { BAND_FREQUENCIES_20[it] }
+
+        val BAND_FREQUENCIES_15 = FIFTEEN_BAND_INDICES.map { BAND_FREQUENCIES_20[it] }
         
         private val BASS_CURVES = listOf(
             floatArrayOf(
