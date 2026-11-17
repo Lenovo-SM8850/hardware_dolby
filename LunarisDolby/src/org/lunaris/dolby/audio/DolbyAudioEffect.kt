@@ -9,6 +9,7 @@ import android.media.audiofx.AudioEffect
 import org.lunaris.dolby.DolbyConstants
 import org.lunaris.dolby.DolbyConstants.DsParam
 import java.util.UUID
+import kotlin.math.abs
 
 class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
     EFFECT_TYPE_NULL, EFFECT_TYPE_DAP, priority, audioSession
@@ -52,13 +53,18 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
 
     fun setDapParameter(param: DsParam, values: IntArray, profile: Int = this.profile) {
         DolbyConstants.dlog(TAG, "setDapParameter: profile=$profile param=$param")
-        val length = values.size
+        val dapValues = if (param == DsParam.GEQ_BAND_GAINS) {
+            IntArray(values.size) { geqGainToDap(values[it]) }
+        } else {
+            values
+        }
+        val length = dapValues.size
         val buf = ByteArray((length + 4) * 4)
         int32ToByteArray(EFFECT_PARAM_SET_PROFILE_PARAMETER, buf, 0)
         int32ToByteArray(length + 1, buf, 4)
         int32ToByteArray(profile, buf, 8)
         int32ToByteArray(param.id, buf, 12)
-        int32ArrayToByteArray(values, buf, 16)
+        int32ArrayToByteArray(dapValues, buf, 16)
         checkStatus(setParameter(EFFECT_PARAM_CPDP_VALUES, buf))
     }
 
@@ -74,7 +80,12 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
         val buf = ByteArray((length + 2) * 4)
         val p = (param.id shl 16) + (profile shl 8) + EFFECT_PARAM_GET_PROFILE_PARAMETER
         checkStatus(getParameter(p, buf))
-        return byteArrayToInt32Array(buf, length)
+        val values = byteArrayToInt32Array(buf, length)
+        return if (param == DsParam.GEQ_BAND_GAINS) {
+            IntArray(values.size) { geqGainFromDap(values[it]) }
+        } else {
+            values
+        }
     }
 
     fun getDapParameterBool(param: DsParam, profile: Int = this.profile): Boolean =
@@ -93,6 +104,22 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
         private const val EFFECT_PARAM_SET_PROFILE_PARAMETER = 0x1000000
         private const val EFFECT_PARAM_GET_PROFILE_PARAMETER = 0x1000005
         private const val EFFECT_PARAM_RESET_PROFILE_SETTINGS = 0xC000000
+
+        // The app keeps graphic equalizer gains in 1/10 dB; the effect takes 1/16 dB.
+        private const val GEQ_APP_STEPS_PER_DB = 10
+        private const val GEQ_DAP_STEPS_PER_DB = 16
+
+        /** value * num / den rounded to the nearest integer, halves away from zero. */
+        private fun scaleRounded(value: Int, num: Int, den: Int): Int {
+            val rounded = (2 * abs(value) * num + den) / (2 * den)
+            return if (value < 0) -rounded else rounded
+        }
+
+        private fun geqGainToDap(gain: Int): Int =
+            scaleRounded(gain, GEQ_DAP_STEPS_PER_DB, GEQ_APP_STEPS_PER_DB)
+
+        private fun geqGainFromDap(gain: Int): Int =
+            scaleRounded(gain, GEQ_APP_STEPS_PER_DB, GEQ_DAP_STEPS_PER_DB)
 
         private fun int32ToByteArray(value: Int, dst: ByteArray, index: Int) {
             var idx = index
